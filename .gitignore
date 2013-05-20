@@ -1,0 +1,34 @@
+#sbt
+logs
+project/project
+project/target
+target
+RUNNING_PID
+
+
+
+#eclipse
+.project
+.classpath
+.settings
+.target
+.cache
+.worksheet
+bin
+.history
+worksheet.sc
+
+
+#bash stackdumps
+*.stackdump
+
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
