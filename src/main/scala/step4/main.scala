@@ -1,4 +1,4 @@
-package funpic4
+package step4
 //lets add another cool general transformation
 import language.higherKinds 
 

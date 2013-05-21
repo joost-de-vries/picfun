@@ -1,4 +1,4 @@
-package funpic3
+package step3
 //lets abstract away the dependency on Option from Functor
 import language.higherKinds //a special language feature that we use to abstract away Option
 

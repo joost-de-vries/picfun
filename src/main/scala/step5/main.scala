@@ -1,4 +1,4 @@
-package funpic5
+package step5
 //a similar transformation that is not as crucial as the other two
 import language.higherKinds
 

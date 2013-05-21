@@ -1,5 +1,4 @@
-package funpic
-//the basics: an object to signal whether there's an outcome or not
+package step1
 sealed trait Option[+A]
 
 //either there is some value
