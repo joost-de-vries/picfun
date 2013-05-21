@@ -1,8 +1,13 @@
 package funpic2
+//next step: let's add a handy transformation to our Option
+//so that we can use existing functions that know nothing about our Option
+//and apply them anyway to our Option, whether it wraps a meaningful value or not
 
+//something that implements this handy transformation is called a Functor
 trait Functor[+A]{
   //the transformation function to be called a Functor
   //equivalent to fmap in Haskell
+  //too bad that we still have a dependency on Option
    def transform[B](f: A => B): Option[B]
    
    //the canonical name for this transformation in Scala. Necessary for 'for(i<-someX)yield i' type expressions

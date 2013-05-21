@@ -1,62 +1,67 @@
 package funpic4
-import scala.language.higherKinds
+//lets add another cool general transformation
+import scala.language.higherKinds 
 
-trait Functor[+A] {
+trait Functor[+A]{
   type This[+A]
 
   def transform[B](f: A => B): This[B]
-
+   
   def map[B](f: A => B): This[B] = transform(f)
 }
-trait Applicative[+A] {
+trait Monad[+A]{
   type This[+A]
+  //this handy transformation works with a function that returns our Option
+  //that's where it's different from the previous transformation
+    def transform2[B](f: A => This[B]): This[B]
 
-  def transform3[B](f: This[A => B]): This[B]
-}
-trait Monad[+A] {
-  type This[+A]
-  def transform2[B](f: A => This[B]): This[B]
-
+    //the canonical name for this in Scala is flatMap
+    //called >>= or bind in Haskell
   def flatMap[B](f: A => This[B]): This[B] = transform2(f)
 }
-trait Filterable[+A] {
-  type This[+A]
-  //the canonical name
-  //to be able to support the 'if' part of for(i<-Some(5) if(even(i)) )yield i
-  def withFilter(p: A => Boolean): Option[A]
-}
-//so this is all you need to be able to take part in a scala for comprehension
-//arguably the essential powerful feature of functional programming
-trait ForComprehensable[+A] extends Functor[A] with Monad[A] with Filterable[A]
-
-sealed trait Option[+A] extends ForComprehensable[A] with Applicative[A] {
+sealed trait Option[+A] extends Functor[A] with Monad[A]{
   type This[+A] = Option[A]
+  
 }
 case class Some[+A](a: A) extends Option[A] {
   override def transform[B](f: A => B) = Some(f(a))
 
   override def transform2[B](f: A => Option[B]) = f(a)
-
-  override def transform3[B](f: Option[A => B]): Option[B] = f.transform[B]({ f2 => f2(a) })
-
-  override def withFilter(p: A => Boolean): Option[A] = if (p(a)) Some(a) else None
 }
 case object None extends Option[Nothing] {
   override def transform[B](f: Nothing => B) = None
   override def transform2[B](f: Nothing => Option[B]) = None
-  override def transform3[B](f: Option[Nothing => B]): Option[B] = None
-  override def withFilter(p: Nothing => Boolean) = None
+
 }
 
 object Main extends App {
-  def half(i: Int) = if (i % 2 == 0) Some(i / 2) else None
-  val plus = (i: Int) => (j: Int) => i + j
+  def plusThree = { i: Int => i + 3 }
 
-  assert(Some(5).transform2(half) == None)
-  val same = Some(5).flatMap(half)
+  val someFive = Some(2) transform { _ + 3 }
 
-  for {
-    i <- Some(3) if (i > 2)
-    j <- Some(4) if (j > 3)
-  } yield plus(i)(j)
+  val nonePlusThree: Option[Int] = None transform plusThree
+
+  def timesTwo(i: Int) = i * 2
+  val someFiveTimesTwo: Option[Int] = for (i <- someFive) yield timesTwo(i)
+  val noneTimesTwo: Option[Int] = for (i <- nonePlusThree) yield timesTwo(i)
+
+  def plus(i: Int, j: Int) = i + j
+  //to be able to use the for keyword in a 'chained' way our Option needs to implement def flatMap[B](f:A=>Option[B]):Option[B]
+  //this is called being a Monad
+  //note how we can keep going with these transformations because of this trick
+  //this is called being composable. A crucial quality to be able to do divide and conquer
+  val someFiveTimesTwoPlusNoneTimesTwo = for {
+    i <- someFiveTimesTwo
+    j <- noneTimesTwo
+  } yield plus(i, j)
+  assert(someFiveTimesTwoPlusNoneTimesTwo == None)
+
+  val someFivePlusNone = Some(5) flatMap { i => None map { j => plus(i, j) } }
+  assert(someFivePlusNone == None)
+  //the former is what the scala compiler produces from the following
+  val someFivePlusNone2 = for {
+    i <- Some(5)
+    j <- None
+  } yield plus(i, j)
+  assert(someFivePlusNone == someFivePlusNone2)
 }
