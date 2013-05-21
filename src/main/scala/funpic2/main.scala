@@ -27,9 +27,10 @@ case object None extends Option[Nothing] {
 }
 
 object Main extends App {
+  //a function that knows nothing about our Option class
   def plusThree = { i: Int => i + 3 }
 
-  //you can apply a function that doesn't know anything about our Option class to instances of Option
+  //but we can apply it anyway to instances of Option
   //because our Option implements def transform[B](f:A=>B):Option[B]
   //equivalent to haskell fmap Just(2) (+3)
   val someFive = Some(2) transform { _ + 3 }
@@ -38,8 +39,7 @@ object Main extends App {
   val nonePlusThree: Option[Int] = None transform plusThree
   assert(nonePlusThree == None)
 
-  //to be able to use the Scala 'for' keyword with 'yield' our Option needs to implement a function def map[B](f:A=>B):Option[B]
-  //this is called a for comprehension
+  //now we can take part in a scala for comprehension because of the scala map function
   def timesTwo(i: Int) = i * 2
   val someFiveTimesTwo: Option[Int] = for (i <- someFive) yield timesTwo(i)
   val noneTimesTwo: Option[Int] = for (i <- nonePlusThree) yield timesTwo(i)

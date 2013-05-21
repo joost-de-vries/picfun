@@ -1,6 +1,6 @@
 package funpic4
 //lets add another cool general transformation
-import scala.language.higherKinds 
+import language.higherKinds 
 
 trait Functor[+A]{
   type This[+A]

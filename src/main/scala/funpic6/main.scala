@@ -2,7 +2,7 @@ package funpic6
 //we need to implement one more function to take part in scala for comprehensions
 //and as a result we don't have to consider nullpointers 
 //while we reuse the generic scala for comprehension syntax
-import scala.language.higherKinds
+import language.higherKinds
 
 trait Functor[+A] {
   type This[+A]

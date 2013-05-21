@@ -1,15 +1,12 @@
 package funpic3
-//lets abstract away the dependency on Option frrom Functor
-import scala.language.higherKinds //necessary for our abstracting away of Option
+//lets abstract away the dependency on Option from Functor
+import language.higherKinds //a special language feature that we use to abstract away Option
 
 trait Functor[+A]{
   //abstract away Option. The concrete subtype Option will give this type attribute the correct value
   type This[+A]
-  //the transformation function to be called a Functor
-  //equivalent to fmap in Haskell
    def transform[B](f: A => B): This[B]
    
-   //the canonical name for this transformation in Scala. Necessary for 'for(i<-someX)yield i' type expressions
   def map[B](f: A => B): This[B] = transform(f)
 }
 

@@ -2,9 +2,11 @@ package funpic
 //the basics: an object to signal whether there's an outcome or not
 sealed trait Option[+A]
 
+//either there is some value
 //this is called Just(a) in Haskell
 case class Some[A](a: A) extends Option[A]
 
+//or there's no values
 //the type Nothing is a subtype of all other types. That's why None
 //doesn't need to know about A
 case object None extends Option[Nothing]

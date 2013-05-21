@@ -1,6 +1,6 @@
 package funpic5
 //a similar transformation that is not as crucial as the other two
-import scala.language.higherKinds
+import language.higherKinds
 
 trait Functor[+A] {
   def transform[B](f: A => B): Option[B]
