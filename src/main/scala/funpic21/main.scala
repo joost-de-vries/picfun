@@ -1,16 +1,20 @@
-package funpic2
+package funpic21
+import scala.language.higherKinds //necessary for our abstracting away of Option
 
 trait Functor[+A]{
+  //abstract away Option
+  type This[+A]
   //the transformation function to be called a Functor
   //equivalent to fmap in Haskell
-   def transform[B](f: A => B): Option[B]
+   def transform[B](f: A => B): This[B]
    
    //the canonical name for this transformation in Scala. Necessary for 'for(i<-someX)yield i' type expressions
-  def map[B](f: A => B): Option[B] = transform(f)
+  def map[B](f: A => B): This[B] = transform(f)
 }
 
 sealed trait Option[+A] extends Functor[A] {
-
+  type This[+A] = Option[A]
+  
 }
 case class Some[+A](a: A) extends Option[A] {
   override def transform[B](f: A => B) = Some(f(a))
@@ -39,4 +43,4 @@ object Main extends App {
   val someFiveTimesTwo: Option[Int] = for (i <- someFive) yield timesTwo(i)
   val noneTimesTwo: Option[Int] = for (i <- nonePlusThree) yield timesTwo(i)
 
- }
+}

@@ -1,21 +1,22 @@
 package funpic
-
+//the basics: an object to signal whether there's an outcome or not
 sealed trait Option[+A]  { }
 
+//this is call Just(a) in Haskell
 case class Some[A](a:A) extends Option[A]
 
 case object None extends Option[Nothing]
 
 object Main extends App{
-  val eenLetter = Some("a")
-  val niets = None
+  def half(i:Int)=if(i%2==0) Some(i/2) else None
+  val anInt = half(4)
+  val none = half(5)
   
-  def string(b:Boolean):Option[String]=  if(b) Some("a") else None
-  val no=string(false)
+
   
-  assert(no == None)
-  assert(no.isInstanceOf[Option[String]])
+  assert(none == None)
+  assert(none.isInstanceOf[Option[Int]])
   
-  val yes=string(true)
-  assert(yes.isInstanceOf[Option[String]])
+
+  assert(anInt.isInstanceOf[Option[Int]])
 }
