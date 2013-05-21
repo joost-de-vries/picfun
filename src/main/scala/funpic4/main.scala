@@ -1,5 +1,5 @@
 package funpic4
-//lets add another cool general transformation
+//lets add another useful general transformation
 import language.higherKinds 
 
 trait Functor[+A]{
