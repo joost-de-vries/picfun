@@ -1,7 +1,7 @@
 package step2
 //next step: let's add a handy transformation to our Option
-//so that we can use existing functions that know nothing about our Option
-//and apply them anyway to our Option, whether it wraps a meaningful value or not
+//so that we can use existing functions that know nothing about our Option class
+//and apply them anyway to our it, whether it wraps a meaningful value or not
 
 //something that implements this handy transformation is called a Functor
 trait Functor[+A]{
