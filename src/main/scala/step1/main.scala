@@ -1,4 +1,6 @@
 package step1
+//start with the basics
+//an object that can signal no result instead of returning null
 sealed trait Option[+A]
 
 //either there is some value
