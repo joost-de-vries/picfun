@@ -30,6 +30,7 @@ trait Filterable[+A] {
 }
 //so this is all you need to be able to take part in a scala for comprehension
 //arguably the essential powerful feature of functional programming
+//the equivalent in Haskell is called do notation
 trait ForComprehensable[+A] extends Functor[A] with Monad[A] with Filterable[A]
 
 sealed trait Option[+A] extends ForComprehensable[A] with Applicative[A] {
